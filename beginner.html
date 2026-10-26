@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新手入门 · 我叫MT：崛起 · 攻略站</title>
+  <meta name="description" content="我叫MT：崛起新手入门攻略：开局英雄选择、升级路线与开荒节奏、开局千抽策略，附常见问题解答，帮你顺利度过开荒期。">
+  <link rel="icon" type="image/png" href="assets/img/favicon-32.png">
+  <!-- 样式在前：全站唯一样式文件 -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- 页面局部：仅攻略要点列表的布局微调，视觉一律沿用全站设计令牌 -->
+  <style>
+    .guide-list { margin: 0; color: var(--text-secondary); }
+    .guide-list li + li { margin-top: .55rem; }
+    .guide-list li::marker { color: var(--gold); }
+  </style>
+</head>
+<body>
+  <!-- 页头（site-header）由 common.js 的 MTCommon.mount 注入到 body 顶部 -->
+
+  <main class="page">
+    <!-- 页面标题区 -->
+    <section class="page-hero">
+      <div class="container">
+        <p class="page-hero__eyebrow">新手指南</p>
+        <h1 class="page-hero__title">新手入门</h1>
+        <p class="page-hero__desc">
+          从开局英雄选择、升级节奏到开局千抽的完整开荒路线，附常见问题手风琴，
+          帮你少走弯路度过前两周。
+        </p>
+        <div class="page-hero__actions">
+          <a class="btn btn--ghost" href="#faq">常见问题</a>
+          <a class="btn btn--ghost" href="resource.html">养成与资源 →</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- ① 要点板块：由页面脚本读取 window.MT_GUIDES.beginner 渲染 -->
+      <div id="guide-sections">
+        <noscript>
+          <div class="alert alert--warn">
+            <p>攻略内容由 JavaScript 渲染，请启用后刷新页面。</p>
+          </div>
+        </noscript>
+      </div>
+
+      <!-- ② FAQ 手风琴：details/summary + 纯 JS 互斥展开 -->
+      <section class="section" id="faq" aria-labelledby="faq-title">
+        <h2 class="section__title" id="faq-title">常见问题</h2>
+        <p class="section__desc">点击问题展开答案，同时只保留一个展开项。</p>
+        <div id="guide-faq" class="faq"></div>
+      </section>
+
+      <!-- ③ 页尾引导 -->
+      <section class="section" aria-labelledby="next-title">
+        <h2 class="section__title" id="next-title">下一步</h2>
+        <article class="card">
+          <div class="card__head">
+            <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg></span>
+            <h3 class="card__title">认识英雄，抄好作业</h3>
+          </div>
+          <p class="card__desc">
+            渡过开荒期后，先到英雄图鉴了解各英雄的资质、定位与强度梯队，
+            再到阵容推荐页直接套用现成的配队思路。
+          </p>
+          <div class="card__foot">
+            <a class="btn btn--primary" href="heroes.html">浏览英雄图鉴</a>
+            <a class="btn btn--ghost" href="lineup.html">查看阵容推荐</a>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <!-- 页脚（site-footer，含免责声明）由 MTCommon.mount 注入到 body 末尾 -->
+
+  <noscript>
+    <div class="alert alert--warn container">
+      <p>本站导航与攻略内容依赖 JavaScript，请启用后刷新页面。</p>
+    </div>
+  </noscript>
+
+  <!-- body 末尾脚本顺序：data 脚本 → common.js → 页面脚本（mount 在最前调用） -->
+
+  <!-- ① data 脚本：攻略数据 -->
+  <script src="data/guides.js"></script>
+
+  <!-- ② 全站公共脚本 -->
+  <script src="assets/js/common.js"></script>
+
+  <!-- ③ 页面脚本：先挂载骨架，再渲染攻略内容 -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* 骨架挂载：页头 / 导航高亮 / 移动端菜单 / 页脚 */
+      MTCommon.mount('beginner');
+
+      var data = window.MT_GUIDES && window.MT_GUIDES.beginner;
+
+      /* 数据缺失时的友好提示条 */
+      function dataAlert(variant, text) {
+        var box = document.createElement('div');
+        box.className = 'alert alert--' + variant;
+        box.setAttribute('role', 'alert');
+        var p = document.createElement('p');
+        var strong = document.createElement('strong');
+        strong.textContent = '攻略数据加载失败。';
+        p.appendChild(strong);
+        p.appendChild(document.createTextNode(text));
+        box.appendChild(p);
+        return box;
+      }
+
+      /* 要点列表 <ul class="guide-list"> */
+      function buildList(items) {
+        var ul = document.createElement('ul');
+        ul.className = 'guide-list';
+        (items || []).forEach(function (text) {
+          var li = document.createElement('li');
+          li.textContent = text;
+          ul.appendChild(li);
+        });
+        return ul;
+      }
+
+      /* ① 要点板块：section__title + 卡片内要点列表 */
+      var sectionsHost = document.getElementById('guide-sections');
+      if (sectionsHost) {
+        if (!data || !Array.isArray(data.sections) || !data.sections.length) {
+          sectionsHost.appendChild(dataAlert('warn',
+            '请确认 data/guides.js 已正常引入，且包含 beginner 数据。'));
+          console.warn('[beginner] window.MT_GUIDES.beginner.sections 缺失');
+        } else {
+          data.sections.forEach(function (sec, i) {
+            var section = document.createElement('section');
+            section.className = 'section';
+            section.setAttribute('aria-labelledby', 'guide-sec-' + i);
+
+            var h2 = document.createElement('h2');
+            h2.className = 'section__title';
+            h2.id = 'guide-sec-' + i;
+
+            var label = document.createElement('span');
+            label.textContent = sec.title || ('要点 ' + (i + 1));
+            h2.appendChild(label);
+
+            var count = document.createElement('span');
+            count.className = 'badge badge--muted';
+            count.textContent =
+              (Array.isArray(sec.list) ? sec.list.length : 0) + ' 条要点';
+            h2.appendChild(count);
+
+            var card = document.createElement('article');
+            card.className = 'card';
+            card.appendChild(buildList(sec.list));
+
+            section.appendChild(h2);
+            section.appendChild(card);
+            sectionsHost.appendChild(section);
+          });
+        }
+      }
+
+      /* ② FAQ 手风琴：互斥展开（纯 JS，样式复用 .faq / .faq-item） */
+      var faqHost = document.getElementById('guide-faq');
+      if (faqHost) {
+        if (!data || !Array.isArray(data.faq) || !data.faq.length) {
+          var info = document.createElement('div');
+          info.className = 'alert alert--info';
+          info.setAttribute('role', 'status');
+          var infoP = document.createElement('p');
+          infoP.textContent = '常见问题整理中，敬请期待。';
+          info.appendChild(infoP);
+          faqHost.appendChild(info);
+          console.warn('[beginner] window.MT_GUIDES.beginner.faq 缺失');
+        } else {
+          var items = [];
+          data.faq.forEach(function (entry, i) {
+            var d = document.createElement('details');
+            d.className = 'faq-item';
+
+            var q = document.createElement('summary');
+            q.className = 'faq-q';
+            q.textContent = entry.q || ('问题 ' + (i + 1));
+
+            var a = document.createElement('div');
+            a.className = 'faq-a';
+            var p = document.createElement('p');
+            p.textContent = entry.a || '';
+            a.appendChild(p);
+
+            d.appendChild(q);
+            d.appendChild(a);
+
+            /* 手风琴互斥：展开一项时收起其余项 */
+            d.addEventListener('toggle', function () {
+              if (!d.open) return;
+              items.forEach(function (other) {
+                if (other !== d) other.open = false;
+              });
+            });
+
+            items.push(d);
+            faqHost.appendChild(d);
+          });
+          if (items.length) items[0].open = true; /* 首条默认展开示意可交互 */
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

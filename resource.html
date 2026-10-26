@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>养成与资源 · 我叫MT：崛起 · 攻略站</title>
+  <meta name="description" content="我叫MT：崛起养成与资源攻略：英雄培养优先级、养成系统投入顺序、共鸣与阵容进阶，以及资源获取途径、钻石金币规划与日常周常安排。">
+  <link rel="icon" type="image/png" href="assets/img/favicon-32.png">
+  <!-- 样式在前：全站唯一样式文件 -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- 页面局部：仅板块卡片布局微调，视觉一律沿用全站设计令牌 -->
+  <style>
+    .guide-cards { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    .guide-list { margin: 0; color: var(--text-secondary); }
+    .guide-list li + li { margin-top: .55rem; }
+    .guide-list li::marker { color: var(--gold); }
+  </style>
+</head>
+<body>
+  <!-- 页头（site-header）由 common.js 的 MTCommon.mount 注入到 body 顶部 -->
+
+  <main class="page">
+    <!-- 页面标题区 -->
+    <section class="page-hero">
+      <div class="container">
+        <p class="page-hero__eyebrow">养成规划</p>
+        <h1 class="page-hero__title">养成与资源</h1>
+        <p class="page-hero__desc">
+          英雄培养优先级、养成系统投入顺序，加上资源获取途径与钻石金币规划，
+          让每一份资源都花在刀刃上。
+        </p>
+        <div class="page-hero__actions">
+          <a class="btn btn--ghost" href="#growth">养成优先级</a>
+          <a class="btn btn--ghost" href="#resource">资源获取与日常</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- 板块一：养成优先级（window.MT_GUIDES.growth） -->
+      <section class="section" id="growth" aria-labelledby="growth-title">
+        <h2 class="section__title" id="growth-title">养成优先级</h2>
+        <p class="section__desc">
+          资源永远不够用：先养谁、先点哪些系统、共鸣解锁后怎么换阵容，一篇讲清。
+        </p>
+        <div class="guide-cards" id="growth-sections">
+          <noscript>
+            <div class="alert alert--warn">
+              <p>攻略内容由 JavaScript 渲染，请启用后刷新页面。</p>
+            </div>
+          </noscript>
+        </div>
+      </section>
+
+      <!-- 板块二：资源获取与日常（window.MT_GUIDES.resource） -->
+      <section class="section" id="resource" aria-labelledby="resource-title">
+        <h2 class="section__title" id="resource-title">资源获取与日常</h2>
+        <p class="section__desc">
+          各副本产出一览、钻石金币怎么花，以及每日每周必做清单，照抄即可。
+        </p>
+        <div class="guide-cards" id="resource-sections"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- 页脚（site-footer，含免责声明）由 MTCommon.mount 注入到 body 末尾 -->
+
+  <noscript>
+    <div class="alert alert--warn container">
+      <p>本站导航与攻略内容依赖 JavaScript，请启用后刷新页面。</p>
+    </div>
+  </noscript>
+
+  <!-- body 末尾脚本顺序：data 脚本 → common.js → 页面脚本（mount 在最前调用） -->
+
+  <!-- ① data 脚本：攻略数据 -->
+  <script src="data/guides.js"></script>
+
+  <!-- ② 全站公共脚本 -->
+  <script src="assets/js/common.js"></script>
+
+  <!-- ③ 页面脚本：先挂载骨架，再渲染两大板块 -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* 骨架挂载：页头 / 导航高亮 / 移动端菜单 / 页脚 */
+      MTCommon.mount('resource');
+
+      /* 各板块子节图标（手绘 SVG，stroke=currentColor；超出下标回退通用图标） */
+      var SVG = function (inner) {
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+          'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
+      };
+      var ICONS = {
+        growth: [
+          SVG('<path d="M6 13l6-6 6 6M6 19l6-6 6 6"/>'),                  /* 培养优先级：进阶 */
+          SVG('<circle cx="12" cy="12" r="4"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M17.7 6.3l-2.1 2.1M8.4 15.6l-2.1 2.1"/>'), /* 投入顺序：齿轮 */
+          SVG('<circle cx="9" cy="12" r="4.5"/><circle cx="15" cy="12" r="4.5"/>') /* 共鸣：双环 */
+        ],
+        resource: [
+          SVG('<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/>'), /* 资源途径：地图 */
+          SVG('<path d="M7 4h10l4 6-9 10L3 10l4-6Z"/><path d="M3 10h18M7 4l5 6 5-6M12 10v10"/>'), /* 钻石金币：宝石 */
+          SVG('<rect x="4" y="5" width="16" height="16" rx="1"/><path d="M4 10h16M8 3v4M16 3v4M8 15h3"/>') /* 日常周常：日历 */
+        ]
+      };
+      var ICON_FALLBACK = SVG('<path d="M4 5c3-1.5 6-1.5 8 0 2-1.5 5-1.5 8 0v14c-3-1.5-6-1.5-8 0-2-1.5-5-1.5-8 0V5Z"/><path d="M12 5v14"/>');
+
+      /* 数据缺失时的友好提示条 */
+      function dataAlert(text) {
+        var box = document.createElement('div');
+        box.className = 'alert alert--warn';
+        box.setAttribute('role', 'alert');
+        var p = document.createElement('p');
+        var strong = document.createElement('strong');
+        strong.textContent = '攻略数据加载失败。';
+        p.appendChild(strong);
+        p.appendChild(document.createTextNode(text));
+        box.appendChild(p);
+        return box;
+      }
+
+      /* 要点列表 <ul class="guide-list"> */
+      function buildList(items) {
+        var ul = document.createElement('ul');
+        ul.className = 'guide-list';
+        (items || []).forEach(function (text) {
+          var li = document.createElement('li');
+          li.textContent = text;
+          ul.appendChild(li);
+        });
+        return ul;
+      }
+
+      /* 子节卡片：card__head（图标 + 标题）+ 要点列表 */
+      function buildSectionCard(sec, i, icons) {
+        var card = document.createElement('article');
+        card.className = 'card';
+
+        var head = document.createElement('div');
+        head.className = 'card__head';
+        var icon = document.createElement('span');
+        icon.className = 'card__icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.innerHTML = icons[i] || ICON_FALLBACK;   /* SVG 标记需走 innerHTML */
+        var h3 = document.createElement('h3');
+        h3.className = 'card__title';
+        h3.textContent = sec.title || ('要点 ' + (i + 1));
+        head.appendChild(icon);
+        head.appendChild(h3);
+
+        card.appendChild(head);
+        card.appendChild(buildList(sec.list));
+        return card;
+      }
+
+      /* 渲染一个大板块：key = growth / resource */
+      function renderBlock(key, hostId) {
+        var host = document.getElementById(hostId);
+        if (!host) {
+          console.warn('[resource] 找不到容器 #' + hostId);
+          return;
+        }
+        var block = window.MT_GUIDES && window.MT_GUIDES[key];
+        if (!block || !Array.isArray(block.sections) || !block.sections.length) {
+          host.appendChild(dataAlert(
+            '请确认 data/guides.js 已正常引入，且包含 ' + key + ' 数据。'));
+          console.warn('[resource] window.MT_GUIDES.' + key + '.sections 缺失');
+          return;
+        }
+        block.sections.forEach(function (sec, i) {
+          host.appendChild(buildSectionCard(sec, i, ICONS[key] || []));
+        });
+      }
+
+      renderBlock('growth', 'growth-sections');
+      renderBlock('resource', 'resource-sections');
+    })();
+  </script>
+</body>
+</html>

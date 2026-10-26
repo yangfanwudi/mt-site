@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="我叫MT：崛起 · 攻略站徽标">
+  <!--
+    我叫MT：崛起 · 攻略站 —— 站点徽标（P0）
+    "MT" 字样 + 纹章盾形外框，金色浇铸质感（#ecd39a 亮金 / #d9b36c 主金 / #9a7b42 暗金，
+    内场 #241a09 = style.css 的 gold-ink 深金墨色）。
+    设计约束：粗线条、少细节，缩小到 32px（favicon）仍清晰可辨；深色底上可辨识。
+    字样为手绘路径，不依赖任何字体。
+  -->
+  <title>我叫MT：崛起 · 攻略站</title>
+  <defs>
+    <!-- 浇铸金：上亮下暗，光从上方来 -->
+    <linearGradient id="mtGoldCast" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ecd39a"/>
+      <stop offset=".55" stop-color="#d9b36c"/>
+      <stop offset="1" stop-color="#9a7b42"/>
+    </linearGradient>
+    <!-- 字样浇铸面：亮金到主金 -->
+    <linearGradient id="mtGoldFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ecd39a"/>
+      <stop offset="1" stop-color="#d9b36c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 盾体：金色浇铸外框 -->
+  <path d="M32 3C40 7 48 8 56 8L56 30C56 44 47 54 32 61C17 54 8 44 8 30L8 8C16 8 24 7 32 3Z"
+        fill="url(#mtGoldCast)"/>
+  <!-- 内场：深底（gold-ink 深金墨色），衬出金框与字样 -->
+  <path d="M32 3C40 7 48 8 56 8L56 30C56 44 47 54 32 61C17 54 8 44 8 30L8 8C16 8 24 7 32 3Z"
+        fill="#241a09" transform="translate(32 32) scale(0.84) translate(-32 -32)"/>
+
+  <!-- MT 字样 · 暗金衬底层（浇铸深度与描边） -->
+  <g fill="none" stroke="#9a7b42" stroke-width="6" stroke-linecap="butt" stroke-linejoin="miter">
+    <path d="M16.5 44V20L24 33.5L31.5 20V44"/>
+    <path d="M36 20H49.5M42.75 20V44"/>
+  </g>
+  <!-- MT 字样 · 亮金浇铸面 -->
+  <g fill="none" stroke="url(#mtGoldFace)" stroke-width="4.2" stroke-linecap="butt" stroke-linejoin="miter">
+    <path d="M16.5 44V20L24 33.5L31.5 20V44"/>
+    <path d="M36 20H49.5M42.75 20V44"/>
+  </g>
+</svg>

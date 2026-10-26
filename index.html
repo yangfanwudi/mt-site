@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>首页 · 我叫MT：崛起 · 攻略站</title>
+  <meta name="description" content="卡牌放置手游《我叫MT：崛起》中文攻略站：英雄图鉴、阵容推荐、新手入门、养成与资源规划一站速查。">
+  <link rel="icon" type="image/png" href="assets/img/favicon-32.png">
+  <meta property="og:title" content="我叫MT：崛起 · 攻略站">
+  <meta property="og:description" content="卡牌放置手游《我叫MT：崛起》中文玩家攻略站">
+  <meta property="og:image" content="assets/img/og-cover.png">
+  <meta property="og:type" content="website">
+  <!-- 样式在前：全站唯一样式文件 -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- 页头（site-header）由 common.js 的 MTCommon.mount 注入到 body 顶部 -->
+
+  <main class="page">
+    <!-- 顶部横幅：站点名 + 一句话简介 + 主行动按钮 -->
+    <section class="page-hero">
+      <div class="container">
+        <p class="page-hero__eyebrow">玩家攻略</p>
+        <h1 class="page-hero__title">我叫MT：崛起 · 攻略站</h1>
+        <p class="page-hero__desc">
+          卡牌放置手游《我叫MT：崛起》中文攻略站 —— 英雄图鉴、阵容推荐、
+          新手入门与养成资源规划，一站速查。
+        </p>
+        <div class="page-hero__actions">
+          <a class="btn btn--primary btn--lg" href="beginner.html">新手入门</a>
+          <a class="btn btn--ghost btn--lg" href="heroes.html">英雄图鉴</a>
+        </div>
+        <!-- 阵营纹章横幅（装饰） -->
+        <div class="hero-crest-band" aria-hidden="true">
+          <span class="crest--alliance"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M24 4 40 10v14c0 10-7 17-16 20-9-3-16-10-16-20V10Z"/><path d="M24 11v21M14 19h20"/></svg></span>
+          <span class="crest--horde"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 38 34 12M14 12l24 24"/><path d="M34 12c3-4 7-5 10-4-1 4-4 7-8 8M14 12c-3-4-7-5-10-4 1 4 4 7 8 8"/><path d="M10 38l4 2M38 38l-4 2"/></svg></span>
+          <span class="crest--neutral"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 24c6-9 12-13 20-13s14 4 20 13c-6 9-12 13-20 13S10 33 4 24Z"/><circle cx="24" cy="24" r="6"/><path d="M24 11V6M24 42v-5M8 15l-4-3M40 15l4-3M8 33l-4 3M40 33l4 3"/></svg></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- ① 板块导航卡：五大板块入口 -->
+      <section class="section" aria-labelledby="boards-title">
+        <h2 class="section__title" id="boards-title">板块导航</h2>
+        <p class="section__desc">覆盖从开局到毕业的全流程内容。</p>
+
+        <div class="card-grid">
+          <article class="card">
+            <div class="card__head">
+              <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg></span>
+              <h3 class="card__title">新手入门</h3>
+            </div>
+            <p class="card__desc">开局英雄选择、升级路线与开局千抽策略，少走弯路第一步。</p>
+            <div class="card__foot">
+              <a class="btn btn--sm btn--ghost" href="beginner.html">进入 →</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__head">
+              <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="11" height="15" rx="1"/><path d="M9 3h11v15"/></svg></span>
+              <h3 class="card__title">英雄图鉴</h3>
+            </div>
+            <!-- 有英雄数据时由页面脚本改写为「收录 N 位英雄…」 -->
+            <p class="card__desc" id="heroes-card-desc">全英雄的阵营、定位、技能与培养建议速查。</p>
+            <div class="card__foot">
+              <a class="btn btn--sm btn--ghost" href="heroes.html">进入 →</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__head">
+              <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l13 13M20 4 7 17"/><path d="M15 17l3 3M9 17l-3 3M4 4l3.5 1M20 4l-3.5 1"/></svg></span>
+              <h3 class="card__title">阵容推荐</h3>
+            </div>
+            <p class="card__desc">从零氪开荒队到上古毕业体系，各阶段阵容与替补思路一图速览。</p>
+            <div class="card__foot">
+              <a class="btn btn--sm btn--ghost" href="lineup.html">进入 →</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__head">
+              <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16c-1 3-4 5-7 5h-1l3 6H8l3-6H9C6 13 4.8 10.5 4 8Z"/><path d="M2 19h20"/></svg></span>
+              <h3 class="card__title">养成与资源</h3>
+            </div>
+            <p class="card__desc">养成优先级、钻石金币规划与每日必做清单，资源不乱花。</p>
+            <div class="card__foot">
+              <a class="btn btn--sm btn--ghost" href="resource.html">进入 →</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card__head">
+              <span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></span>
+              <h3 class="card__title">交流区</h3>
+            </div>
+            <p class="card__desc">聊阵容、问问题、分享心得，与其他玩家一起打磨配队思路。</p>
+            <div class="card__foot">
+              <a class="btn btn--sm btn--ghost" href="forum.html">进入 →</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ② 精选阵容：页面脚本按 tier 档位取最高的 3 套渲染；数据缺失时整节隐藏 -->
+      <section class="section" id="home-lineups" aria-labelledby="lineups-title">
+        <h2 class="section__title" id="lineups-title">精选阵容</h2>
+        <p class="section__desc">按强度档位（T0 优先）自动精选 3 套阵容，附成员名单与思路摘要。</p>
+        <div class="card-grid" id="lineup-grid"></div>
+      </section>
+
+      <!-- ③ 攻略速览：页面脚本读取 MT_GUIDES 渲染三大板块要点；数据缺失时整节隐藏 -->
+      <section class="section" id="home-guides" aria-labelledby="guides-title">
+        <h2 class="section__title" id="guides-title">攻略速览</h2>
+        <p class="section__desc">三大板块要点先行，完整内容见新手入门与游戏资源页。</p>
+        <div class="card-grid" id="guide-grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- 页脚（site-footer，含免责声明）由 MTCommon.mount 注入到 body 末尾 -->
+
+  <noscript>
+    <div class="alert alert--warn container">
+      <p>本站导航与内容渲染依赖 JavaScript，请启用后刷新页面。</p>
+    </div>
+  </noscript>
+
+  <!-- body 末尾脚本顺序：data 脚本 → common.js → 页面脚本（mount 在最前调用） -->
+
+  <!-- ① data 脚本：阵容 / 攻略 / 英雄（英雄数据用于首页总数与成员头像阵营着色） -->
+  <script src="data/lineups.js"></script>
+  <script src="data/guides.js"></script>
+  <script src="data/heroes.js"></script>
+
+  <!-- ② 全站公共脚本 -->
+  <script src="assets/js/common.js"></script>
+
+  <!-- ③ 页面脚本：先挂载骨架，再渲染数据区块（全部防御式判空，缺失即隐藏区块） -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* 骨架挂载：页头 / 导航高亮 / 移动端菜单 / 页脚 */
+      MTCommon.mount('index');
+
+      /* ---------- 小工具 ---------- */
+      function toArray(v) {
+        return Array.isArray(v) ? v : [];
+      }
+      function el(tag, cls, text) {
+        var node = document.createElement(tag);
+        if (cls) node.className = cls;
+        if (text != null) node.textContent = text;
+        return node;
+      }
+
+      /* 英雄名 → 阵营映射（用于阵容成员头像着色；邪能/未知用默认金色） */
+      var factionByHero = {};
+      toArray(window.MT_HEROES).forEach(function (h) {
+        if (h && h.name) factionByHero[h.name] = h.faction || '';
+      });
+      function avatarVariant(heroName) {
+        var f = factionByHero[heroName];
+        if (f === '联盟') return 'avatar--alliance';
+        if (f === '部落') return 'avatar--horde';
+        if (f === '中立') return 'avatar--neutral';
+        return '';                       /* 邪能 / 未知 → 默认金渐变 */
+      }
+
+      /* ---------- 英雄图鉴卡片：写入收录总数 ---------- */
+      (function heroCount() {
+        var desc = document.getElementById('heroes-card-desc');
+        var heroes = toArray(window.MT_HEROES);
+        if (desc && heroes.length) {
+          desc.textContent = '收录 ' + heroes.length +
+            ' 位英雄的阵营、定位、技能与培养建议。';
+        }
+      })();
+
+      /* ---------- 精选阵容：tier 档位最高的前 3 套 ---------- */
+      (function featuredLineups() {
+        var section = document.getElementById('home-lineups');
+        var grid = document.getElementById('lineup-grid');
+        if (!section || !grid) return;
+
+        var TIER_RANK = { 'T0': 0, 'T1': 1, 'T2': 2, 'T3': 3 };
+        var TIER_BADGE = {
+          'T0': 'badge--tier0', 'T1': 'badge--tier1',
+          'T2': 'badge--tier2', 'T3': 'badge--tier3'
+        };
+        function rank(l) {
+          return TIER_RANK.hasOwnProperty(l && l.tier) ? TIER_RANK[l.tier] : 9;
+        }
+
+        var lineups = toArray(window.MT_LINEUPS)
+          .filter(function (l) { return l && typeof l === 'object' && l.name; });
+
+        if (!lineups.length) {          /* 数据缺失：整节隐藏，不报错 */
+          section.hidden = true;
+          return;
+        }
+
+        lineups.sort(function (a, b) { return rank(a) - rank(b); });
+
+        lineups.slice(0, 3).forEach(function (l) {
+          var card = el('article', 'card');
+
+          var head = el('div', 'card__head');
+          head.appendChild(el('h3', 'card__title', l.name));
+          head.appendChild(el('span',
+            'badge ' + (TIER_BADGE[l.tier] || 'badge--muted'),
+            l.tier || '待定'));
+          if (l.type) head.appendChild(el('span', 'badge', l.type));
+          card.appendChild(head);
+
+          /* 成员名单：首字头像（按阵营着色）+ 姓名，徽章胶囊排列 */
+          var members = el('div', 'card__foot');
+          toArray(l.members).forEach(function (m) {
+            if (!m || !m.name) return;
+            var chip = el('span', 'badge');
+            var variant = avatarVariant(m.name);
+            chip.appendChild(el('span',
+              'avatar avatar--sm' + (variant ? ' ' + variant : ''),
+              m.name.charAt(0))).setAttribute('aria-hidden', 'true');
+            chip.appendChild(document.createTextNode(m.name));
+            members.appendChild(chip);
+          });
+          if (members.childNodes.length) card.appendChild(members);
+
+          /* 思路摘要 */
+          if (l.idea) card.appendChild(el('p', 'card__desc', l.idea));
+
+          var foot = el('div', 'card__foot');
+          var more = el('a', 'btn btn--sm btn--ghost', '查看全部阵容 →');
+          more.href = 'lineup.html';
+          foot.appendChild(more);
+          card.appendChild(foot);
+
+          grid.appendChild(card);
+        });
+      })();
+
+      /* ---------- 攻略速览：三大板块各自要点摘要 ---------- */
+      (function guideOverview() {
+        var section = document.getElementById('home-guides');
+        var grid = document.getElementById('guide-grid');
+        if (!section || !grid) return;
+
+        /* 手绘 SVG 图标（stroke=currentColor，复用 .card__icon 托板样式） */
+        var ICON = {
+          flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg>',
+          anvil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16c-1 3-4 5-7 5h-1l3 6H8l3-6H9C6 13 4.8 10.5 4 8Z"/><path d="M2 19h20"/></svg>',
+          coin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><rect x="9" y="9" width="6" height="6"/></svg>'
+        };
+
+        /* MT_GUIDES key → 页面入口与图标（growth 属于游戏资源页） */
+        var META = [
+          { key: 'beginner', href: 'beginner.html', icon: ICON.flag, fallback: '新手入门' },
+          { key: 'growth',   href: 'resource.html', icon: ICON.anvil, fallback: '养成优先级' },
+          { key: 'resource', href: 'resource.html', icon: ICON.coin,  fallback: '资源获取与日常' }
+        ];
+
+        var guides = (window.MT_GUIDES && typeof window.MT_GUIDES === 'object')
+          ? window.MT_GUIDES : {};
+
+        var rendered = 0;
+        META.forEach(function (meta) {
+          var g = guides[meta.key];
+          if (!g || typeof g !== 'object') return;   /* 板块缺失：跳过该卡 */
+
+          /* 取第一个有内容的板块要点，最多 3 条 */
+          var first = toArray(g.sections)
+            .filter(function (s) { return s && toArray(s.list).length; })[0];
+
+          var card = el('article', 'card');
+          var head = el('div', 'card__head');
+          var iconBox = el('span', 'card__icon');
+          iconBox.innerHTML = meta.icon;           /* SVG 标记需走 innerHTML */
+          iconBox.setAttribute('aria-hidden', 'true');
+          head.appendChild(iconBox);
+          head.appendChild(el('h3', 'card__title', g.title || meta.fallback));
+          card.appendChild(head);
+
+          var list = el('ul', 'card__desc');
+          if (first) {
+            toArray(first.list).slice(0, 3).forEach(function (item) {
+              if (item) list.appendChild(el('li', null, String(item)));
+            });
+          }
+          if (list.childNodes.length) card.appendChild(list);
+
+          var foot = el('div', 'card__foot');
+          var more = el('a', 'btn btn--sm btn--soft', '查看完整攻略 →');
+          more.href = meta.href;
+          foot.appendChild(more);
+          card.appendChild(foot);
+
+          grid.appendChild(card);
+          rendered++;
+        });
+
+        if (!rendered) section.hidden = true;        /* 数据缺失：整节隐藏 */
+      })();
+    })();
+  </script>
+</body>
+</html>

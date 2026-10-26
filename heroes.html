@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英雄图鉴 · 我叫MT：崛起 · 攻略站</title>
+  <meta name="description" content="我叫MT：崛起英雄图鉴：按阵营、稀有度、定位筛选英雄，支持按名称与技能名搜索，附 tier 评级、获取途径、技能说明与培养建议。">
+  <link rel="icon" type="image/png" href="assets/img/favicon-32.png">
+  <!-- 样式在前：全站唯一样式文件 -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- 页头（site-header）由 common.js 的 MTCommon.mount 注入到 body 顶部 -->
+
+  <main class="page">
+    <!-- 页面标题区 -->
+    <section class="page-hero">
+      <div class="container">
+        <p class="page-hero__eyebrow">资料图鉴</p>
+        <h1 class="page-hero__title">英雄图鉴</h1>
+        <p class="page-hero__desc">
+          收录我叫MT：崛起全英雄资料：按阵营、稀有度、定位筛选，支持按名称与
+          技能名搜索；卡片附 tier 评级、获取途径、技能说明与培养建议。
+          数据整理自网络公开攻略，仅供参考。
+        </p>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- 英雄列表：筛选选项由 heroes.js 从 window.MT_HEROES 动态生成 -->
+      <section class="section" aria-labelledby="heroes-title">
+        <h2 class="section__title" id="heroes-title">全部英雄</h2>
+
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label class="field">
+              <span class="field__label">阵营</span>
+              <span class="select"><select id="hero-faction"></select></span>
+            </label>
+            <label class="field">
+              <span class="field__label">稀有度</span>
+              <span class="select"><select id="hero-rarity"></select></span>
+            </label>
+            <label class="field">
+              <span class="field__label">定位</span>
+              <span class="select"><select id="hero-role"></select></span>
+            </label>
+          </div>
+          <div class="search-box">
+            <input type="search" id="hero-search" placeholder="搜索英雄名 / 技能名…" aria-label="搜索英雄名或技能名">
+          </div>
+        </div>
+
+        <!-- 结果计数：随筛选与搜索即时更新 -->
+        <p class="section__desc" id="hero-count" aria-live="polite">共 0 位英雄</p>
+
+        <!-- 英雄卡片网格（由 heroes.js 渲染） -->
+        <div class="card-grid" id="hero-grid"></div>
+
+        <!-- 空结果提示（无匹配或数据缺失时由 heroes.js 显示） -->
+        <div class="alert alert--info" id="hero-empty" role="status" hidden>
+          <p>
+            <span id="hero-empty-text">没有符合条件的英雄，试试调整筛选条件或搜索关键词。</span>
+            <button class="btn btn--sm" type="button" id="hero-reset">清除全部筛选</button>
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- 页脚（site-footer，含免责声明）由 MTCommon.mount 注入到 body 末尾 -->
+
+  <noscript>
+    <div class="alert alert--warn container">
+      <p>本站导航与英雄图鉴依赖 JavaScript，请启用后刷新页面。</p>
+    </div>
+  </noscript>
+
+  <!-- body 末尾脚本顺序（骨架模式与 forum.html 一致：data 脚本在前、
+       页面逻辑在后；本页约定 common.js 置于最后，heroes.js 会自动等待
+       MTCommon 可用后再调用 mount('heroes')，页头页脚仍由其注入）：
+       ① data/heroes.js      英雄数据（window.MT_HEROES）
+       ② assets/js/heroes.js 页面逻辑：筛选 / 搜索 / 卡片渲染
+       ③ assets/js/common.js 全站公共脚本：页头 / 导航 / 页脚 -->
+  <script src="data/heroes.js"></script>
+  <script src="assets/js/heroes.js"></script>
+  <script src="assets/js/common.js"></script>
+</body>
+</html>

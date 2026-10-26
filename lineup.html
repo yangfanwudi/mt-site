@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阵容推荐 · 我叫MT：崛起 · 攻略站</title>
+  <meta name="description" content="我叫MT：崛起阵容推荐：新手开荒队、部落普攻队、邪能绝技队、联盟必杀队、上古毕业体系等主流阵容的成员分工、搭配思路与获取转型建议，支持按投入档位筛选。">
+  <link rel="icon" type="image/png" href="assets/img/favicon-32.png">
+  <!-- 样式在前：全站唯一样式文件 -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- 页头（site-header）由 common.js 的 MTCommon.mount 注入到 body 顶部 -->
+
+  <main class="page">
+    <!-- 页面标题区 -->
+    <section class="page-hero">
+      <div class="container">
+        <p class="page-hero__eyebrow">配队指南</p>
+        <h1 class="page-hero__title">阵容推荐</h1>
+        <p class="page-hero__desc">
+          整理自公开攻略的主流阵容：从零氪开荒到上古毕业体系，每套阵容附成员分工、
+          搭配思路与获取转型建议，可按投入档位快速筛选。
+        </p>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- 阵容列表 -->
+      <section class="section" aria-labelledby="lineup-title">
+        <h2 class="section__title" id="lineup-title">阵容一览</h2>
+        <p class="section__desc">阵容按培养路线排序（平民开荒 → 氪金毕业），点击标签按投入档位筛选。</p>
+
+        <div class="alert alert--info" role="note">
+          <p><strong>口径说明：</strong>tier 强度档位——T0=毕业阵容档、T1=进阶阵容档、T2=新手/开荒档、待定=攻略未给出定级；
+          type 投入档位——平民=零氪可成型、微氪、中氪、氪金=上古英雄等高门槛体系。数据整理自网络公开攻略，仅供参考。</p>
+        </div>
+
+        <!-- type 筛选标签：由页面脚本根据数据中实际出现的 type 值动态生成 -->
+        <div class="filter-bar">
+          <div class="field">
+            <span class="field__label">投入档位</span>
+            <div class="chips" id="lineup-type-chips" role="group" aria-label="按投入档位筛选阵容"></div>
+          </div>
+        </div>
+
+        <p class="section__desc" id="lineup-count" role="status"></p>
+
+        <!-- 阵容大卡片：由页面脚本读取 window.MT_LINEUPS 渲染 -->
+        <div class="card-grid" id="lineup-grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- 页脚（site-footer，含免责声明）由 MTCommon.mount 注入到 body 末尾 -->
+
+  <noscript>
+    <div class="alert alert--warn container">
+      <p>本站导航与阵容列表依赖 JavaScript，请启用后刷新页面。</p>
+    </div>
+  </noscript>
+
+  <!-- body 末尾脚本顺序：data 脚本 → common.js → 页面脚本（mount 在最前调用） -->
+
+  <!-- ① data 脚本：阵容数据 -->
+  <script src="data/lineups.js"></script>
+
+  <!-- ② 全站公共脚本 -->
+  <script src="assets/js/common.js"></script>
+
+  <!-- ③ 页面脚本：先挂载骨架，再渲染阵容列表与筛选 -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* 骨架挂载：页头 / 导航高亮 / 移动端菜单 / 页脚 */
+      if (window.MTCommon) MTCommon.mount('lineup');
+
+      var RAW = window.MT_LINEUPS;
+
+      /* type → 徽章变体与手绘 SVG 图标（投入档位由低到高） */
+      var TYPE_BADGE = { '平民': 'badge--success', '微氪': 'badge--rare', '中氪': 'badge--epic', '氪金': 'badge--legendary' };
+      var SVG = function (inner) {
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+          'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
+      };
+      var TYPE_ICON  = {
+        '平民': SVG('<circle cx="12" cy="12" r="9"/><rect x="9" y="9" width="6" height="6"/>'),                          /* 铜钱 */
+        '微氪': SVG('<path d="M7 4h10l4 6-9 10L3 10l4-6Z"/><path d="M3 10h18M7 4l5 6 5-6M12 10v10"/>'),                  /* 宝石 */
+        '中氪': SVG('<path d="M4 4l13 13M20 4 7 17"/><path d="M15 17l3 3M9 17l-3 3M4 4l3.5 1M20 4l-3.5 1"/>'),            /* 双剑 */
+        '氪金': SVG('<path d="M4 8l4 4 4-8 4 8 4-4-1.5 11h-13L4 8Z"/>')                                                  /* 王冠 */
+      };
+      var ICON_SHIELD = SVG('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3Z"/>');
+      /* tier → 徽章变体（T0 金 / T1 紫 / T2 蓝 / T3 绿，未定级灰） */
+      var TIER_BADGE = { 'T0': 'badge--tier0', 'T1': 'badge--tier1', 'T2': 'badge--tier2', 'T3': 'badge--tier3' };
+
+      var gridEl = document.getElementById('lineup-grid');
+      var chipsEl = document.getElementById('lineup-type-chips');
+      var countEl = document.getElementById('lineup-count');
+      var currentType = '全部';
+
+      /* ---------- 工具 ---------- */
+      function make(tag, className, text) {
+        var node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text != null) node.textContent = text;
+        return node;
+      }
+
+      function firstChar(name) {
+        var str = String(name || '').trim();
+        return str ? str.charAt(0) : '?';
+      }
+
+      /* ---------- 数据防御性校验 ---------- */
+      if (!Array.isArray(RAW) || !RAW.length) {
+        if (gridEl) {
+          var warn = make('div', 'alert alert--warn');
+          warn.setAttribute('role', 'alert');
+          warn.appendChild(make('p', null,
+            '阵容数据（data/lineups.js）未加载或为空，请检查脚本引用后刷新页面。'));
+          gridEl.appendChild(warn);
+        }
+        if (countEl) countEl.textContent = '暂无可展示的阵容数据。';
+        return;
+      }
+      var LINEUPS = RAW.filter(function (lu) {
+        return lu && typeof lu === 'object';
+      });
+
+      /* ---------- 阵容大卡片 ---------- */
+      function labeledDesc(label, text) {
+        var p = make('p', 'card__desc');
+        p.appendChild(make('strong', 'text-gold', label + '：'));
+        p.appendChild(document.createTextNode(text));
+        return p;
+      }
+
+      function buildCard(lu) {
+        var card = make('article', 'card');
+
+        /* 标题行：图标 + 阵容名 */
+        var head = make('div', 'card__head');
+        var icon = make('span', 'card__icon');
+        icon.innerHTML = TYPE_ICON[lu.type] || ICON_SHIELD;   /* SVG 标记需走 innerHTML */
+        icon.setAttribute('aria-hidden', 'true');
+        head.appendChild(icon);
+        head.appendChild(make('h3', 'card__title', lu.name || '未命名阵容'));
+        card.appendChild(head);
+
+        /* 徽章行：tier + type + 成员数 */
+        var badges = make('div', 'card__foot');
+        badges.appendChild(make('span', 'badge ' + (TIER_BADGE[lu.tier] || 'badge--muted'), lu.tier || '待定'));
+        badges.appendChild(make('span', 'badge ' + (TYPE_BADGE[lu.type] || 'badge--muted'), lu.type || '未分类'));
+        var members = Array.isArray(lu.members) ? lu.members.filter(function (m) { return m && typeof m === 'object'; }) : [];
+        badges.appendChild(make('span', 'badge badge--muted', members.length + ' 人'));
+        card.appendChild(badges);
+
+        /* 成员列表：首字头像 + 角色名 + 定位注解 */
+        members.forEach(function (m) {
+          var row = make('div', 'card__head');
+          var avatar = make('span', 'avatar avatar--sm', firstChar(m.name));
+          avatar.setAttribute('aria-hidden', 'true');
+          row.appendChild(avatar);
+          var text = make('p', 'card__desc');
+          text.appendChild(make('strong', null, m.name || '待补充'));
+          if (m.note) {
+            text.appendChild(document.createTextNode(' '));
+            text.appendChild(make('span', 'text-muted', m.note));
+          }
+          row.appendChild(text);
+          card.appendChild(row);
+        });
+
+        /* 搭配思路 + 获取与转型建议 */
+        if (lu.idea) card.appendChild(labeledDesc('搭配思路', lu.idea));
+        if (lu.note) card.appendChild(labeledDesc('获取与转型', lu.note));
+        return card;
+      }
+
+      /* ---------- 筛选标签（"全部" + 数据中实际出现的 type 值） ---------- */
+      function collectTypes() {
+        var types = [];
+        LINEUPS.forEach(function (lu) {
+          if (lu.type && types.indexOf(lu.type) === -1) types.push(lu.type);
+        });
+        return types;
+      }
+
+      function buildChips() {
+        if (!chipsEl) return;
+        var all = make('button', 'chip chip--active', '全部');
+        all.type = 'button';
+        all.setAttribute('aria-pressed', 'true');
+        all.addEventListener('click', function () { setFilter('全部'); });
+        chipsEl.appendChild(all);
+
+        collectTypes().forEach(function (t) {
+          var chip = make('button', 'chip', t);
+          chip.type = 'button';
+          chip.setAttribute('aria-pressed', 'false');
+          chip.addEventListener('click', function () { setFilter(t); });
+          chipsEl.appendChild(chip);
+        });
+      }
+
+      function setFilter(type) {
+        currentType = type;
+        if (chipsEl) {
+          chipsEl.querySelectorAll('.chip').forEach(function (chip) {
+            var active = chip.textContent === currentType;
+            chip.classList.toggle('chip--active', active);
+            chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+          });
+        }
+        renderGrid();
+      }
+
+      /* ---------- 渲染 ---------- */
+      function renderGrid() {
+        if (!gridEl) return;
+        while (gridEl.firstChild) gridEl.removeChild(gridEl.firstChild);
+
+        var list = LINEUPS.filter(function (lu) {
+          return currentType === '全部' || lu.type === currentType;
+        });
+
+        list.forEach(function (lu) { gridEl.appendChild(buildCard(lu)); });
+
+        if (!list.length) {
+          var empty = make('div', 'alert alert--info');
+          empty.setAttribute('role', 'status');
+          empty.appendChild(make('p', null, '该档位下暂无阵容，试试其他标签。'));
+          gridEl.appendChild(empty);
+        }
+
+        if (countEl) {
+          countEl.textContent = currentType === '全部'
+            ? '共 ' + LINEUPS.length + ' 套阵容'
+            : '共 ' + LINEUPS.length + ' 套阵容，「' + currentType + '」档位下 ' + list.length + ' 套';
+        }
+      }
+
+      buildChips();
+      renderGrid();
+    })();
+  </script>
+</body>
+</html>
