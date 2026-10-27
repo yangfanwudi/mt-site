@@ -125,6 +125,26 @@
       nav.appendChild(li);
     });
 
+    var more = document.createElement('ul');
+    more.className = 'site-footer__more';
+    more.style.cssText = 'display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;' +
+      'margin:10px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.7';
+    [
+      { href: 'about.html', label: '关于' },
+      { href: 'privacy.html', label: '隐私' },
+      { href: 'https://yangfanwudi.github.io/', label: '全部作品' },
+      { href: 'https://yangfanwudi.github.io/yongye-site/', label: '免费规则怪谈网页游戏' }
+    ].forEach(function (item) {
+      var moreLi = document.createElement('li');
+      var moreLink = document.createElement('a');
+      moreLink.href = item.href;
+      moreLink.textContent = item.label;
+      moreLink.style.cssText =
+        'color:inherit;opacity:.78;text-decoration:none;border-bottom:1px solid currentColor';
+      moreLi.appendChild(moreLink);
+      more.appendChild(moreLi);
+    });
+
     var disclaimer = document.createElement('p');
     disclaimer.className = 'site-footer__disclaimer';
     disclaimer.textContent = '数据整理自网络公开攻略，仅供参考。';
@@ -136,6 +156,7 @@
 
     inner.appendChild(brand);
     inner.appendChild(nav);
+    inner.appendChild(more);
     inner.appendChild(disclaimer);
     inner.appendChild(meta);
     footer.appendChild(inner);
